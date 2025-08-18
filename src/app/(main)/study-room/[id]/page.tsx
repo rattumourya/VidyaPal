@@ -65,9 +65,13 @@ export default function StudyRoomPage({ params }: { params: { id: string } }) {
           <Separator className="mt-4" />
 
           <TabsContent value="study" className="flex-1 overflow-y-auto p-0">
-             <div className="container mx-auto grid md:grid-cols-2 gap-6 py-6 h-full">
-                <TutorPanel />
-                <ChatPanel />
+             <div className="container mx-auto grid lg:grid-cols-3 gap-6 py-6 h-full">
+                <div className="lg:col-span-2">
+                    <TutorPanel />
+                </div>
+                <div className="lg:col-span-1">
+                    <ChatPanel />
+                </div>
               </div>
           </TabsContent>
           <TabsContent value="quiz_history" className="flex-1 overflow-y-auto">
