@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,10 @@ import { Label } from "@/components/ui/label";
 import { AtSign, KeyRound } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -38,30 +43,65 @@ function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export function LoginForm() {
   const router = useRouter();
+  const { signIn, signInWithGoogle } = useAuth();
+  const { toast } = useToast();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  const handleSignIn = (e: React.MouseEvent<HTMLButtonElement>) => {
+
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push("/");
+    setIsLoading(true);
+    try {
+      await signIn(email, password);
+      router.push("/");
+    } catch (error: any) {
+      toast({
+        title: "Login Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+        setIsLoading(false);
+    }
   };
 
+  const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true);
+    try {
+        await signInWithGoogle();
+        router.push("/");
+    } catch (error: any) {
+         toast({
+            title: "Login Failed",
+            description: error.message,
+            variant: "destructive",
+        });
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  }
+
   return (
-    <div className="space-y-6">
+    <form onSubmit={handleSignIn} className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="email">Email Address</Label>
         <div className="relative">
           <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          <Input id="email" type="email" placeholder="you@example.com" required className="pl-10" />
+          <Input id="email" type="email" placeholder="you@example.com" required className="pl-10" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
       </div>
       <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
         <div className="relative">
           <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          <Input id="password" type="password" required className="pl-10" />
+          <Input id="password" type="password" required className="pl-10" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
       </div>
-      <Button type="submit" className="w-full font-bold" onClick={handleSignIn}>
-        Sign In
+      <Button type="submit" className="w-full font-bold" disabled={isLoading}>
+        {isLoading ? 'Signing In...' : 'Sign In'}
       </Button>
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
@@ -73,9 +113,8 @@ export function LoginForm() {
           </span>
         </div>
       </div>
-      <Button variant="outline" className="w-full" onClick={handleSignIn}>
-        <GoogleIcon className="mr-2 h-5 w-5" />
-        Sign In with Google
+      <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={isGoogleLoading} type="button">
+         {isGoogleLoading ? 'Redirecting...' : <><GoogleIcon className="mr-2 h-5 w-5" /> Sign In with Google</>}
       </Button>
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
@@ -83,6 +122,6 @@ export function LoginForm() {
           Sign up
         </Link>
       </div>
-    </div>
+    </form>
   );
 }

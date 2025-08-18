@@ -1,12 +1,34 @@
+
+"use client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/hooks/use-auth";
 import { Upload } from "lucide-react";
+import { useState } from "react";
 
 export default function ProfilePage() {
+    const { user, updateUser } = useAuth();
+    const [name, setName] = useState(user?.displayName || '');
+    const [isSaving, setIsSaving] = useState(false);
+
+    const handleSaveChanges = async () => {
+        if (!user) return;
+        setIsSaving(true);
+        try {
+            await updateUser({ displayName: name });
+            alert('Profile updated successfully!');
+        } catch (error) {
+            alert('Failed to update profile.');
+            console.error(error);
+        } finally {
+            setIsSaving(false);
+        }
+    }
+
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
         <h1 className="text-3xl font-bold font-headline mb-6">Profile Settings</h1>
@@ -14,8 +36,8 @@ export default function ProfilePage() {
             <Card>
                 <CardHeader className="items-center text-center">
                     <Avatar className="w-24 h-24 mb-4">
-                        <AvatarImage src="https://placehold.co/100x100.png" alt="User Avatar" data-ai-hint="user avatar" />
-                        <AvatarFallback>AV</AvatarFallback>
+                        <AvatarImage src={user?.photoURL || "https://placehold.co/100x100.png"} alt="User Avatar" data-ai-hint="user avatar" />
+                        <AvatarFallback>{user?.displayName?.charAt(0) || 'U'}</AvatarFallback>
                     </Avatar>
                     <Button variant="outline" size="sm">
                         <Upload className="mr-2 h-4 w-4" />
@@ -23,8 +45,8 @@ export default function ProfilePage() {
                     </Button>
                 </CardHeader>
                 <CardContent>
-                    <h2 className="text-xl font-semibold text-center">Alex Ventures</h2>
-                    <p className="text-sm text-muted-foreground text-center">alex@ventures.com</p>
+                    <h2 className="text-xl font-semibold text-center">{user?.displayName}</h2>
+                    <p className="text-sm text-muted-foreground text-center">{user?.email}</p>
                 </CardContent>
             </Card>
             
@@ -36,13 +58,13 @@ export default function ProfilePage() {
                 <CardContent className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="name">Full Name</Label>
-                        <Input id="name" defaultValue="Alex Ventures" />
+                        <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>
-                        <Input id="email" type="email" defaultValue="alex@ventures.com" disabled />
+                        <Input id="email" type="email" value={user?.email || ''} disabled />
                     </div>
-                     <Button>Save Changes</Button>
+                     <Button onClick={handleSaveChanges} disabled={isSaving}>{isSaving ? 'Saving...' : 'Save Changes'}</Button>
                 </CardContent>
             </Card>
 

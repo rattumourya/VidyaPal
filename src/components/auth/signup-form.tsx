@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,9 @@ import { Label } from "@/components/ui/label";
 import { AtSign, KeyRound, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -38,37 +42,74 @@ function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export function SignupForm() {
   const router = useRouter();
+  const { signUp, signInWithGoogle } = useAuth();
+  const { toast } = useToast();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  const handleSignUp = (e: React.MouseEvent<HTMLButtonElement>) => {
+
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push("/");
+    setIsLoading(true);
+    try {
+      await signUp(email, password, name);
+      router.push("/");
+    } catch (error: any) {
+        toast({
+            title: "Sign Up Failed",
+            description: error.message,
+            variant: "destructive",
+        });
+    } finally {
+        setIsLoading(false);
+    }
   };
 
+  const handleGoogleSignUp = async () => {
+    setIsGoogleLoading(true);
+    try {
+        await signInWithGoogle();
+        router.push("/");
+    } catch (error: any) {
+        toast({
+            title: "Sign Up Failed",
+            description: error.message,
+            variant: "destructive",
+        });
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  }
+
+
   return (
-    <div className="space-y-6">
+    <form onSubmit={handleSignUp} className="space-y-6">
        <div className="space-y-2">
         <Label htmlFor="name">Full Name</Label>
         <div className="relative">
           <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          <Input id="name" placeholder="Your Name" required className="pl-10" />
+          <Input id="name" placeholder="Your Name" required className="pl-10" value={name} onChange={(e) => setName(e.target.value)} />
         </div>
       </div>
       <div className="space-y-2">
         <Label htmlFor="email">Email Address</Label>
         <div className="relative">
           <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          <Input id="email" type="email" placeholder="you@example.com" required className="pl-10" />
+          <Input id="email" type="email" placeholder="you@example.com" required className="pl-10" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
       </div>
       <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
         <div className="relative">
           <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          <Input id="password" type="password" required className="pl-10" />
+          <Input id="password" type="password" required className="pl-10" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
       </div>
-      <Button type="submit" className="w-full font-bold" onClick={handleSignUp}>
-        Sign Up
+      <Button type="submit" className="w-full font-bold" disabled={isLoading}>
+        {isLoading ? 'Creating Account...' : 'Sign Up'}
       </Button>
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
@@ -80,9 +121,8 @@ export function SignupForm() {
           </span>
         </div>
       </div>
-      <Button variant="outline" className="w-full" onClick={handleSignUp}>
-        <GoogleIcon className="mr-2 h-5 w-5" />
-        Sign Up with Google
+       <Button variant="outline" className="w-full" onClick={handleGoogleSignUp} disabled={isGoogleLoading} type="button">
+        {isGoogleLoading ? 'Redirecting...' : <><GoogleIcon className="mr-2 h-5 w-5" /> Sign Up with Google </>}
       </Button>
       <div className="text-center text-sm">
         Already have an account?{" "}
@@ -90,6 +130,6 @@ export function SignupForm() {
           Sign In
         </Link>
       </div>
-    </div>
+    </form>
   );
 }
