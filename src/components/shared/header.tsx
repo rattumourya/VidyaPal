@@ -16,7 +16,7 @@ export function Header() {
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-sm px-4 md:px-6">
       <Link href="/" className="flex items-center gap-2">
         <BookOpenCheck className="h-8 w-8 text-primary" />
-        <span className="text-xl font-bold font-headline">VidyaVerse</span>
+        <span className="text-xl font-bold font-headline">VidyaPal</span>
       </Link>
       <div className="ml-auto flex items-center gap-4">
         <DropdownMenu>

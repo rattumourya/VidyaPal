@@ -5,7 +5,7 @@ export default function LoginPage() {
   return (
     <Card className="w-full max-w-md shadow-2xl">
       <CardHeader>
-        <CardTitle className="text-3xl font-bold text-center text-card-foreground font-headline">Welcome Back to VidyaVerse</CardTitle>
+        <CardTitle className="text-3xl font-bold text-center text-primary-foreground font-headline">Welcome Back to VidyaPal</CardTitle>
       </CardHeader>
       <CardContent>
         <LoginForm />
