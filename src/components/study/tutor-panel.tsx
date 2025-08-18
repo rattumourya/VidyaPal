@@ -89,9 +89,9 @@ export function TutorPanel() {
               The key is to seek wealth, not money or status. Wealth is having assets that earn while you sleep. Money is how we transfer time and wealth. Status is your social standing. Focus on creating things society wants but doesn't yet know how to get.
             </p>
             {teachingContentHasQuizNotification && (
-                <div className="p-4 rounded-lg bg-primary/10 border border-primary/20 flex items-center gap-3">
+                <div className="mt-4 p-4 rounded-lg bg-primary/10 border border-primary/20 flex items-center gap-3 text-primary/90">
                     <Lightbulb className="w-6 h-6 text-primary" />
-                    <p className="text-base font-medium text-primary">Your {quiz.type} quiz is ready! Click the button to take it when you're prepared.</p>
+                    <p className="text-base font-medium">Your {quiz.type} quiz is ready! Click the button to take it when you're prepared.</p>
                 </div>
             )}
           </div>
