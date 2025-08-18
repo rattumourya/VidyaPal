@@ -38,3 +38,7 @@ This document outlines the key user stories for the VidyaPal application, descri
 *   **As a user, I want to take a quiz by clicking a floating button** that appears only when a quiz is available, so I can decide when I'm ready to be tested.
 *   **As a user, I want to see my quiz results immediately** after submission, with feedback on correct and incorrect answers.
 *   **As a user, I want to access my complete quiz history** from a menu in the study room, so I can review my past performance and identify areas for improvement.
+
+---
+
+**Interactive Prototype URL:** [https://vidya-pal.vercel.app/](https://vidya-pal.vercel.app/)
