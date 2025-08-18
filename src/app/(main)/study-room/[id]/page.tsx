@@ -99,7 +99,7 @@ export default function StudyRoomPage({ params }: { params: { id: string } }) {
       </header>
       
       <main className="flex-1 overflow-y-auto bg-muted/20">
-        <div className="container mx-auto py-6 h-full">
+        <div className="container mx-auto py-6">
             <TutorPanel />
         </div>
       </main>
