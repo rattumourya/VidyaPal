@@ -13,13 +13,8 @@ export function ChatPanel() {
   ];
 
   return (
-    <Card className="h-full flex flex-col shadow-md">
-      <CardHeader>
-        <CardTitle className="font-headline text-xl flex items-center gap-2">
-          <Bot /> Interactive Chatbot
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="flex-1 overflow-hidden">
+    <div className="h-full flex flex-col bg-transparent shadow-none border-0">
+      <div className="flex-1 overflow-hidden p-4">
         <ScrollArea className="h-full pr-4">
           <div className="space-y-6">
             {messages.map((message, index) => (
@@ -42,15 +37,15 @@ export function ChatPanel() {
             ))}
           </div>
         </ScrollArea>
-      </CardContent>
-      <CardFooter className="p-4 border-t">
+      </div>
+      <div className="p-4 border-t">
         <div className="relative w-full">
           <Input placeholder="Ask a question..." className="pr-12" />
           <Button type="submit" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-10">
             <Send className="h-4 w-4" />
           </Button>
         </div>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 }
