@@ -9,7 +9,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Play, RefreshCw, Trash2, Book } from "lucide-react";
+import { Play, RefreshCw, Trash2, Book, Star } from "lucide-react";
 import Link from "next/link";
 import {
   AlertDialog,
@@ -45,7 +45,7 @@ export function StudyRoomCard({ room, onDelete }: StudyRoomCardProps) {
             <div className="flex-1">
                 <CardTitle className="font-headline text-lg leading-tight">{room.name}</CardTitle>
                 <CardDescription className="mt-1">
-                    {room.progress}% complete
+                    {room.progress > 0 ? `${room.progress}% complete` : "Not started"}
                 </CardDescription>
             </div>
         </div>
@@ -85,8 +85,8 @@ export function StudyRoomCard({ room, onDelete }: StudyRoomCardProps) {
                 </Button>
                 <Button asChild size="sm">
                     <Link href={`/study-room/${room.id}`}>
-                        <Play className="mr-2 h-4 w-4" />
-                        Resume
+                        {room.progress > 0 ? <Play className="mr-2 h-4 w-4" /> : <Star className="mr-2 h-4 w-4" />}
+                        {room.progress > 0 ? "Resume" : "Start"}
                     </Link>
                 </Button>
             </div>
