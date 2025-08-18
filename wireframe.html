@@ -22,6 +22,7 @@
             margin-bottom: 4rem;
             padding: 2rem;
             border-radius: 1rem;
+            position: relative;
         }
         .screen-title {
             font-size: 2.25rem;
@@ -71,6 +72,19 @@
         .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
         .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
         .font-headline { font-family: 'PT Sans', sans-serif; }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
     </style>
 </head>
 <body class="p-8">
@@ -78,7 +92,7 @@
     <!-- Header Component -->
     <header class="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-sm px-4 md:px-6 mb-8">
       <a href="#" class="flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-primary"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path><path d="M6 8h2"></path><path d="M16 8h2"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-primary"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
         <span class="text-xl font-bold font-headline">VidyaPal</span>
       </a>
       <div class="ml-auto flex items-center gap-4">
@@ -324,9 +338,9 @@
     </section>
 
     <!-- Study Room Screen -->
-    <section id="study-room" class="screen-section">
+    <section id="study-room" class="screen-section overflow-hidden">
         <h1 class="screen-title">Study Room Screen</h1>
-        <div class="flex flex-col h-[90vh] relative">
+        <div class="flex flex-col h-[90vh] relative bg-background">
            <header class="flex items-center justify-between p-4 border-b bg-background/95 sticky top-0 z-10 h-16">
               <div class="flex items-center gap-4">
                 <a href="#dashboard" class="p-2">
@@ -355,7 +369,7 @@
                         <p>
                           The key is to seek wealth, not money or status. Wealth is having assets that earn while you sleep. Money is how we transfer time and wealth. Status is your social standing. Focus on creating things society wants but doesn't yet know how to get.
                         </p>
-                        <div class="mt-8 p-4 rounded-lg bg-primary/10 border border-primary/20 flex items-center gap-3 text-primary">
+                        <div class="mt-8 p-4 rounded-lg bg-primary/10 border border-primary/20 flex items-center gap-3 text-primary/90">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-primary"><path d="M15 14c.2-1 .7-1.7 1.5-2.5C17.7 10.7 19 9.5 19 8c0-2.2-1.8-4-4-4-1.1 0-2.1.5-2.8 1.2L12 5.5 11.8 5c-.7-.7-1.7-1.2-2.8-1.2-2.2 0-4 1.8-4 4c0 1.5 1.3 2.7 2.5 3.5.8.8 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
                             <p class="text-base font-medium">Your small quiz is ready! Click the button to take it when you're prepared.</p>
                         </div>
@@ -384,9 +398,119 @@
                 <span class="sr-only">Open Chat</span>
             </button>
         </div>
+        
+        <!-- Chatbot Screen Overlay -->
+        <div class="overlay" id="chatbot-overlay">
+            <div class="fixed bottom-0 left-0 right-0 h-[85vh] bg-card border-t border-border rounded-t-lg shadow-lg flex flex-col">
+                <div class="p-4 border-b">
+                   <h2 class="text-lg font-semibold text-card-foreground">Interactive Chatbot</h2>
+                </div>
+                <div class="flex-1 overflow-hidden p-4">
+                    <div class="h-full pr-4 space-y-6 overflow-y-auto">
+                        <div class="flex items-start gap-3">
+                            <span class="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">AI</span>
+                            <div class="rounded-lg p-3 max-w-[80%] bg-muted">
+                              <p class="text-sm">Hello! Feel free to ask me anything about the current topic.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 justify-end">
+                             <div class="rounded-lg p-3 max-w-[80%] bg-primary text-primary-foreground">
+                              <p class="text-sm">Can you explain the difference between wealth and money in simpler terms?</p>
+                            </div>
+                            <img src="https://placehold.co/100x100.png" alt="User" class="w-8 h-8 rounded-full">
+                        </div>
+                        <div class="flex items-start gap-3">
+                             <span class="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">AI</span>
+                             <div class="rounded-lg p-3 max-w-[80%] bg-muted">
+                              <p class="text-sm">Of course! Think of it like this: Money is the water you carry in a bucket. Wealth is the well you build that gives you water without you having to carry it. One is temporary and requires work, the other is a system that works for you.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="p-4 border-t">
+                    <div class="relative w-full">
+                      <input placeholder="Ask a question..." class="pr-12 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base">
+                      <button class="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-10 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-primary text-primary-foreground">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+                      </button>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen Overlay -->
+        <div class="overlay" id="quiz-overlay">
+            <div class="max-w-2xl w-full bg-card rounded-lg shadow-lg">
+                <div class="p-6 border-b">
+                    <h2 class="flex items-center gap-2 text-lg font-semibold">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="m10.4 12.6-1.8 1.8"></path><path d="m12.2 12.6 1.8 1.8"></path><path d="M11.25 19.25h.01"></path><path d="M12 16.5c.5-1 1.5-1.5 2.5-1.5s2 .5 2.5 1.5"></path></svg>
+                        Quick Quiz
+                    </h2>
+                </div>
+                <div class="max-h-[60vh] overflow-y-auto p-6 space-y-6">
+                    <!-- Question 1 -->
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                       <div class="p-6 flex flex-row items-center justify-between">
+                         <p class="font-semibold">1. According to Naval, what is the primary focus for building true wealth?</p>
+                       </div>
+                        <div class="p-6 pt-0">
+                           <div class="grid gap-2">
+                                <div class="flex items-center space-x-2">
+                                    <input type="radio" name="q1" id="q1o1"><label for="q1o1">Accumulating money</label>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <input type="radio" name="q1" id="q1o2"><label for="q1o2">Creating assets that earn passively</label>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <input type="radio" name="q1" id="q1o3"><label for="q1o3">Achieving high social status</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 2 -->
+                     <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                       <div class="p-6 flex flex-row items-center justify-between">
+                         <p class="font-semibold">2. What is the difference between wealth and money?</p>
+                       </div>
+                        <div class="p-6 pt-0">
+                           <div class="grid gap-2">
+                                <div class="flex items-center space-x-2">
+                                    <input type="radio" name="q2" id="q2o1"><label for="q2o1">They are the same thing</label>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <input type="radio" name="q2" id="q2o2"><label for="q2o2">Wealth is a system that works for you, money is temporary</label>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <input type="radio" name="q2" id="q2o3"><label for="q2o3">Money is more important than wealth</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="flex items-center p-6 pt-0 justify-end">
+                    <button class="h-10 px-4 py-2 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-primary text-primary-foreground">Submit Quiz</button>
+                </div>
+            </div>
+        </div>
     </section>
+
+    <script>
+        // Simple script to toggle overlays
+        document.addEventListener('DOMContentLoaded', () => {
+            const quizOverlay = document.getElementById('quiz-overlay');
+            const chatbotOverlay = document.getElementById('chatbot-overlay');
+            
+            // Initially hide overlays
+            quizOverlay.style.display = 'none';
+            chatbotOverlay.style.display = 'none';
+            
+            // Example of how to show them (you can link this to button clicks)
+            // To test, you can uncomment these lines:
+            // setTimeout(() => { chatbotOverlay.style.display = 'flex'; }, 2000);
+            // setTimeout(() => { chatbotOverlay.style.display = 'none'; quizOverlay.style.display = 'flex'; }, 5000);
+        });
+    </script>
+
 
 </body>
 </html>
-
-    
