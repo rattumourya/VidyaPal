@@ -18,7 +18,7 @@ export function Header() {
         <BookOpenCheck className="h-8 w-8 text-primary" />
         <span className="text-xl font-bold font-headline">VidyaVerse</span>
       </Link>
-      <div className="ml-auto">
+      <div className="ml-auto flex items-center gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full">

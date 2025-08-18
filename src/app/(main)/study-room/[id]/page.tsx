@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BrainCircuit, Languages, History } from "lucide-react";
+import { BrainCircuit, Languages, History, Bot, BookOpen } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 export default function StudyRoomPage({ params }: { params: { id: string } }) {
@@ -17,7 +17,7 @@ export default function StudyRoomPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)]">
-      <header className="p-4 border-b bg-background/95">
+      <header className="p-4 border-b bg-background/95 sticky top-0 z-10">
         <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex-1">
             <p className="text-sm text-muted-foreground">Study Room</p>
@@ -55,23 +55,24 @@ export default function StudyRoomPage({ params }: { params: { id: string } }) {
       </header>
       
       <main className="flex-1 overflow-hidden">
-        <Tabs defaultValue="study" className="h-full flex flex-col">
+        <Tabs defaultValue="tutor" className="h-full flex flex-col">
           <div className="container mx-auto">
-            <TabsList className="mt-4">
-              <TabsTrigger value="study">Study Session</TabsTrigger>
+            <TabsList className="mt-4 grid w-full grid-cols-3">
+              <TabsTrigger value="tutor"><BookOpen className="mr-2 h-4 w-4" />Tutor</TabsTrigger>
+              <TabsTrigger value="chat"><Bot className="mr-2 h-4 w-4" />Chat</TabsTrigger>
               <TabsTrigger value="quiz_history"><History className="mr-2 h-4 w-4" />Quiz History</TabsTrigger>
             </TabsList>
           </div>
           <Separator className="mt-4" />
 
-          <TabsContent value="study" className="flex-1 overflow-y-auto p-0">
-             <div className="container mx-auto grid lg:grid-cols-3 gap-6 py-6 h-full">
-                <div className="lg:col-span-2">
-                    <TutorPanel />
-                </div>
-                <div className="lg:col-span-1">
-                    <ChatPanel />
-                </div>
+          <TabsContent value="tutor" className="flex-1 overflow-y-auto p-0">
+             <div className="container mx-auto py-6 h-full">
+                <TutorPanel />
+              </div>
+          </TabsContent>
+          <TabsContent value="chat" className="flex-1 overflow-y-auto p-0">
+             <div className="container mx-auto py-6 h-full">
+                <ChatPanel />
               </div>
           </TabsContent>
           <TabsContent value="quiz_history" className="flex-1 overflow-y-auto">
