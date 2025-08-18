@@ -91,7 +91,7 @@ export function TutorPanel() {
             {teachingContentHasQuizNotification && (
                 <div className="p-4 rounded-lg bg-primary/10 border border-primary/20 flex items-center gap-3">
                     <Lightbulb className="w-6 h-6 text-primary" />
-                    <p className="text-base font-medium text-primary-foreground">Your {quiz.type} quiz is ready! Click the button to take it when you're prepared.</p>
+                    <p className="text-base font-medium text-primary">Your {quiz.type} quiz is ready! Click the button to take it when you're prepared.</p>
                 </div>
             )}
           </div>
