@@ -5,12 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Upload } from "lucide-react";
-import { Header } from "@/components/shared/header";
 
 export default function ProfilePage() {
   return (
-    <>
-    <Header />
     <div className="container mx-auto py-8 px-4 md:px-6">
         <h1 className="text-3xl font-bold font-headline mb-6">Profile Settings</h1>
         <div className="grid gap-8 md:grid-cols-1">
@@ -72,6 +69,5 @@ export default function ProfilePage() {
             </div>
         </div>
     </div>
-    </>
   );
 }

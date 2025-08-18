@@ -1,7 +1,6 @@
 import { StudyRoomCard } from "@/components/study/study-room-card";
 import { CreateStudyRoomDialog } from "@/components/study/create-study-room-dialog";
 import { PlusCircle } from "lucide-react";
-import { Header } from "@/components/shared/header";
 
 // Mock data for study rooms
 const studyRooms = [
@@ -28,8 +27,6 @@ export default function DashboardPage() {
   const rooms = studyRooms; // Switch to noStudyRooms to test empty state
 
   return (
-    <>
-    <Header />
     <div className="container mx-auto py-8 px-4 md:px-6">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold font-headline">Your Study Rooms</h1>
@@ -50,6 +47,5 @@ export default function DashboardPage() {
         </div>
       )}
     </div>
-    </>
   );
 }
