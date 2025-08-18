@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { ChevronLeft, ChevronRight, CheckCircle, XCircle, Lightbulb, Bot } from "lucide-react";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
 
 // Mock data for quiz
 const mockQuiz = {
@@ -68,6 +67,9 @@ export function TutorPanel() {
     }
   };
 
+  // This will be used to show the notification but not the button itself inside the teaching content
+  const teachingContentHasQuizNotification = quiz && true;
+
   return (
     <>
       <Card className="h-full flex flex-col shadow-md">
@@ -83,10 +85,10 @@ export function TutorPanel() {
             <p>
               The key is to seek wealth, not money or status. Wealth is having assets that earn while you sleep. Money is how we transfer time and wealth. Status is your social standing. Focus on creating things society wants but doesn't yet know how to get.
             </p>
-            {quiz && (
+            {teachingContentHasQuizNotification && (
                 <div className="p-4 rounded-lg bg-primary/10 border border-primary/20 flex items-center gap-3">
                     <Lightbulb className="w-6 h-6 text-primary" />
-                    <p className="text-base font-medium text-primary-foreground">Your {quiz.type} quiz is ready! Click the button below when you want to take it.</p>
+                    <p className="text-base font-medium text-primary-foreground">Your {quiz.type} quiz is ready! Click the button to take it when you're prepared.</p>
                 </div>
             )}
           </div>
@@ -106,7 +108,7 @@ export function TutorPanel() {
       {quiz && (
          <Dialog onOpenChange={(open) => !open && setSubmitted(false)}>
             <DialogTrigger asChild>
-                <Button className="fixed bottom-20 right-6 h-16 w-16 rounded-full shadow-lg z-20" size="lg">
+                <Button className="fixed bottom-4 right-6 h-16 w-16 rounded-full shadow-lg z-20" size="icon">
                     <QuizIcon className="h-8 w-8" />
                     <span className="sr-only">Take Quiz</span>
                 </Button>
@@ -144,7 +146,7 @@ export function TutorPanel() {
                 </div>
                  <DialogFooter>
                     {!submitted ? (
-                        <Button onClick={handleSubmit}>Submit Quiz</Button>
+                        <Button onClick={handleSubmit} disabled={Object.keys(selectedAnswers).length !== quiz.questions.length}>Submit Quiz</Button>
                     ) : (
                          <DialogClose asChild>
                             <Button variant="outline">Close</Button>
@@ -154,8 +156,23 @@ export function TutorPanel() {
             </DialogContent>
         </Dialog>
       )}
+      
+       <Sheet>
+          <SheetTrigger asChild>
+            <Button className="fixed bottom-24 right-6 h-16 w-16 rounded-full shadow-lg z-20" size="icon">
+                <Bot className="h-8 w-8" />
+                <span className="sr-only">Open Chat</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="bottom" className="h-[85vh] flex flex-col p-0">
+             <SheetHeader className="p-4 border-b">
+                <SheetTitle>Interactive Chatbot</SheetTitle>
+            </SheetHeader>
+            <div className="flex-1 overflow-hidden">
+                 <ChatPanel />
+            </div>
+          </SheetContent>
+      </Sheet>
     </>
   );
 }
-
-    

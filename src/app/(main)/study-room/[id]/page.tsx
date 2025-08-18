@@ -104,22 +104,6 @@ export default function StudyRoomPage({ params }: { params: { id: string } }) {
         </div>
       </main>
 
-       <Sheet>
-          <SheetTrigger asChild>
-            <Button className="fixed bottom-20 right-6 h-16 w-16 rounded-full shadow-lg z-20" size="lg">
-                <Bot className="h-8 w-8" />
-                <span className="sr-only">Open Chat</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="bottom" className="h-[85vh] flex flex-col p-0">
-             <SheetHeader className="p-4 border-b">
-                <SheetTitle>Interactive Chatbot</SheetTitle>
-            </SheetHeader>
-            <div className="flex-1 overflow-hidden">
-                 <ChatPanel />
-            </div>
-          </SheetContent>
-      </Sheet>
     </div>
   );
 }
