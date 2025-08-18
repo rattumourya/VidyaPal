@@ -11,6 +11,17 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Play, RefreshCw, Trash2, Book } from "lucide-react";
 import Link from "next/link";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 type StudyRoom = {
   id: string;
@@ -20,9 +31,10 @@ type StudyRoom = {
 
 interface StudyRoomCardProps {
   room: StudyRoom;
+  onDelete: (id: string) => void;
 }
 
-export function StudyRoomCard({ room }: StudyRoomCardProps) {
+export function StudyRoomCard({ room, onDelete }: StudyRoomCardProps) {
   return (
     <Card className="flex flex-col h-full shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardHeader>
@@ -44,10 +56,28 @@ export function StudyRoomCard({ room }: StudyRoomCardProps) {
       <Separator />
       <CardFooter className="p-4 bg-muted/50">
         <div className="flex w-full justify-between items-center gap-2">
-            <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive hover:bg-destructive/10">
-                <Trash2 className="mr-2 h-4 w-4" />
-                Delete
-            </Button>
+           <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive hover:bg-destructive/10">
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete your study room
+                    and all of its data.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => onDelete(room.id)}>Continue</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
             <div className="flex gap-2">
                 <Button variant="outline" size="sm">
                     <RefreshCw className="mr-2 h-4 w-4" />

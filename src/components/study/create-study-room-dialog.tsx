@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -22,14 +23,36 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Upload, Link as LinkIcon, PlusCircle, Book, BrainCircuit, Languages } from "lucide-react";
+import { useState } from "react";
 
 interface CreateStudyRoomDialogProps {
     isMainCta?: boolean;
+    onCreateRoom: (newRoomData: { name: string; }) => void;
 }
 
-export function CreateStudyRoomDialog({ isMainCta = false }: CreateStudyRoomDialogProps) {
+export function CreateStudyRoomDialog({ isMainCta = false, onCreateRoom }: CreateStudyRoomDialogProps) {
+    const [open, setOpen] = useState(false);
+    const [roomName, setRoomName] = useState("");
+    const [activeTab, setActiveTab] = useState("upload");
+
+    const handleSubmit = () => {
+        if (roomName) {
+            onCreateRoom({ name: roomName });
+            setOpen(false); // Close dialog on submit
+            setRoomName(""); // Reset input
+        }
+    }
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const fileName = e.target.files[0].name;
+            // Remove file extension
+            setRoomName(fileName.substring(0, fileName.lastIndexOf('.')) || fileName);
+        }
+    }
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {isMainCta ? (
              <Button size="lg">
@@ -49,22 +72,30 @@ export function CreateStudyRoomDialog({ isMainCta = false }: CreateStudyRoomDial
           </DialogDescription>
         </DialogHeader>
         <div className="py-4">
-          <Tabs defaultValue="upload">
+          <Tabs defaultValue="upload" onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="upload"><Upload className="mr-2 h-4 w-4" /> Upload File</TabsTrigger>
               <TabsTrigger value="link"><LinkIcon className="mr-2 h-4 w-4" /> From Link</TabsTrigger>
             </TabsList>
-            <TabsContent value="upload" className="py-4">
+            <TabsContent value="upload" className="py-4 space-y-2">
               <div className="space-y-2">
                 <Label htmlFor="file-upload">Book or Document</Label>
-                <Input id="file-upload" type="file" />
+                <Input id="file-upload" type="file" onChange={handleFileChange} />
               </div>
+               <div className="space-y-2">
+                    <Label htmlFor="room-name-upload">Room Name</Label>
+                    <Input id="room-name-upload" value={roomName} onChange={(e) => setRoomName(e.target.value)} placeholder="e.g., The Almanack of Naval Ravikant" />
+                </div>
             </TabsContent>
-            <TabsContent value="link" className="py-4">
+            <TabsContent value="link" className="py-4 space-y-2">
                <div className="space-y-2">
                 <Label htmlFor="link-url">Documentation Link</Label>
                 <Input id="link-url" placeholder="https://example.com/docs" />
               </div>
+              <div className="space-y-2">
+                    <Label htmlFor="room-name-link">Room Name</Label>
+                    <Input id="room-name-link" value={roomName} onChange={(e) => setRoomName(e.target.value)} placeholder="e.g., React.js Documentation" />
+                </div>
             </TabsContent>
           </Tabs>
 
@@ -104,7 +135,7 @@ export function CreateStudyRoomDialog({ isMainCta = false }: CreateStudyRoomDial
               Cancel
             </Button>
           </DialogClose>
-          <Button type="submit">
+          <Button type="submit" onClick={handleSubmit} disabled={!roomName}>
             <Book className="mr-2 h-4 w-4" /> Start Learning
           </Button>
         </DialogFooter>
